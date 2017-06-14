@@ -65,6 +65,7 @@
 	ba = branch -a
 	bd = branch -d
 	br = branch -r
+	bdd = branch -D
 	#############
 	c = commit
 	ca = commit -a
@@ -74,6 +75,10 @@
 	cd = commit --amend
 	cad = commit -a --amend
 	ced = commit --allow-empty --amend
+	#############
+	cp = cherry-pick
+	cpa = cherry-pick --abort
+	cpc = cherry-pick --continue
 	#############
 	d = diff
 	dc = diff --cached
