@@ -64,29 +64,34 @@
 	b = branch
 	ba = branch -a
 	bd = branch -d
-	br = branch -r
 	bdd = branch -D
+	br = branch -r
+	bc = rev-parse --abbrev-ref HEAD
 	#############
 	c = commit
 	ca = commit -a
 	cm = commit -m
-	cem = commit --allow-empty -m
 	cam = commit -am
+	cem = commit --allow-empty -m
 	cd = commit --amend
 	cad = commit -a --amend
 	ced = commit --allow-empty --amend
+	#############
+	cl = clone
+	cld = clone --depth 1
+	clg = !sh -c 'git clone git://github.com/$1 $(basename $1)' -
 	#############
 	cp = cherry-pick
 	cpa = cherry-pick --abort
 	cpc = cherry-pick --continue
 	#############
 	d = diff
-	dc = diff --cached
-	dl = difftool
-	dlc = difftool --cached
-	dk = diff --check
 	dp = diff --patience
+	dc = diff --cached
+	dk = diff --check
 	dck = diff --cached --check
+	dt = difftool
+	dct = difftool --cached
 	#############
 	f = fetch
 	fo = fetch origin
@@ -102,7 +107,7 @@
 	lg = log --oneline --graph --decorate
 	#############
 	ls = ls-files
-	lsf = "!git ls-files | grep -i"
+	lsf = !git ls-files | grep -i
 	#############
 	m = merge
 	ma = merge --abort
@@ -117,26 +122,37 @@
 	ps = push
 	psf = push -f
 	psu = push -u
+	#############
 	pso = push origin
 	psao = push --all origin
 	psfo = push -f origin
 	psuo = push -u origin
+	#############
 	psom = push origin master
+	psaom = push --all origin master
 	psfom = push -f origin master
 	psuom = push -u origin master
+	psoc = !git push origin $(git bc)
+	psaoc = !git push --all origin $(git bc)
+	psfoc = !git push -f origin $(git bc)
+	psuoc = !git push -u origin $(git bc)
+	psdc = !git push origin :$(git bc)
 	#############
 	pl = pull
-	plu = pull -u
-	plo = pull origin
-	plp = pull upstream
-	plom = pull origin master
-	plpm = pull upstream master
-	#############
 	pb = pull --rebase
+	#############
+	plo = pull origin
 	pbo = pull --rebase origin
-	pbp = pull --rebase upstream
+	plom = pull origin master
+	ploc = !git pull origin $(git bc)
 	pbom = pull --rebase origin master
-	pbpm = pull --rebase upstream master
+	pboc = !git pull --rebase origin $(git bc)
+	#############
+	plu = pull upstream
+	plum = pull upstream master
+	pluc = !git pull upstream $(git bc)
+	pbum = pull --rebase upstream master
+	pbuc = !git pull --rebase upstream $(git bc)
 	#############
 	rb = rebase
 	rba = rebase --abort
@@ -157,15 +173,20 @@
 	ra = remote add
 	rr = remote rm
 	rv = remote -v
-	rm = remote rename
+	rn = remote rename
 	rp = remote prune
 	rs = remote show
 	rao = remote add origin
-	rau = remote add upstream
+	rap = remote add upstream
+	rro = remote remove origin
+	rrp = remote remove upstream
 	rso = remote show origin
-	rsu = remote show upstream
+	rsp = remote show upstream
 	rpo = remote prune origin
-	rpu = remote prune upstream
+	rpp = remote prune upstream
+	#############
+	rmf = rm -f
+	rmrf = rm -r -f
 	#############
 	s = status
 	sb = status -s -b
@@ -186,22 +207,25 @@
 	svnd = svn dcommit
 	svnl = svn log --oneline --show-commit
 	#############
+	subadd = !sh -c 'git submodule add git://github.com/$1 $2/$(basename $1)' -
+	subup = submodule update --init --recursive
+	subpull = !git submodule foreach git pull --tags origin master
+	#############
 	assume = update-index --assume-unchanged
 	unassume = update-index --no-assume-unchanged
-	assumed = "!git ls-files -v | grep ^h | cut -c 3-"
-	unassumeall = !git assumed | xargs git update-index --no-assume-unchanged
-	assumeall = "!git st -s | awk {'print $2'} | xargs git assume"
+	assumed = !git ls -v | grep ^h | cut -c 3-
+	unassumeall = !git assumed | xargs git unassume
+	assumeall = !git status -s | awk {'print $2'} | xargs git assume
+	#############
+	bump = !sh -c 'git commit -am \"Version bump v$1\" && git push origin $(git bc) && git release $1' -
+	release = !sh -c 'git tag v$1 && git push --tags' -
+	aliases = !git config -l | grep alias | cut -c 7-
+	snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
+	bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
+	whois = !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -
+	serve = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
 	#############
 	ours = "!f() { git checkout --ours $@ && git add $@; }; f"
 	theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
-	#############
-	whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
-	whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
-	#############
-	barebranch = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
-	flat = clone --depth 1
-	subpull = !git submodule foreach git pull --tags origin master
-	subrepo = !sh -c 'filter-branch --prune-empty --subdirectory-filter $1 master' -
+	subrepo = !sh -c 'git filter-branch --prune-empty --subdirectory-filter $1 master' -
 	human = name-rev --name-only --refs=refs/heads/*
-	serve = !git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git
-	snapshot = !git stash save "snapshot: $(date)" && git stash apply "stash@{0}"
