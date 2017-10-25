@@ -122,6 +122,7 @@
 	ps = push
 	psf = push -f
 	psu = push -u
+	pst = ps --tags
 	#############
 	pso = push origin
 	psao = push --all origin
@@ -177,13 +178,13 @@
 	rp = remote prune
 	rs = remote show
 	rao = remote add origin
-	rap = remote add upstream
+	rau = remote add upstream
 	rro = remote remove origin
-	rrp = remote remove upstream
+	rru = remote remove upstream
 	rso = remote show origin
-	rsp = remote show upstream
+	rsu = remote show upstream
 	rpo = remote prune origin
-	rpp = remote prune upstream
+	rpu = remote prune upstream
 	#############
 	rmf = rm -f
 	rmrf = rm -r -f
@@ -217,12 +218,12 @@
 	unassumeall = !git assumed | xargs git unassume
 	assumeall = !git status -s | awk {'print $2'} | xargs git assume
 	#############
-	bump = !sh -c 'git commit -am \"Version bump v$1\" && git push origin $(git bc) && git release $1' -
-	release = !sh -c 'git tag v$1 && git push --tags' -
+	bump = !sh -c 'git commit -am \"Version bump v$1\" && git psuoc && git release $1' -
+	release = !sh -c 'git tag v$1 && git pst' -
 	aliases = !git config -l | grep alias | cut -c 7-
 	snap = !git stash save 'snapshot: $(date)' && git stash apply 'stash@{0}'
 	bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
-	whois = !sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -
+	whois = !sh -c 'git log -i -1 --author=\"$1\" --pretty=\"format:%an <%ae>\"' -
 	serve = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
 	#############
 	ours = "!f() { git checkout --ours $@ && git add $@; }; f"
