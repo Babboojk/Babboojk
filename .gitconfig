@@ -68,6 +68,7 @@
 	bdd = branch -D
 	br = branch -r
 	bc = rev-parse --abbrev-ref HEAD
+	bu = !git rev-parse --abbrev-ref --symbolic-full-name "@{u}"
 	#############
 	c = commit
 	ca = commit -a
@@ -201,6 +202,7 @@
 	sp = stash pop
 	ss = stash save
 	sw = stash show
+	st = !git stash list | wc -l 2>/dev/null | grep -oEi '[0-9][0-9]*'
 	#############
 	t = tag
 	td = tag -d
@@ -231,6 +233,9 @@
 	bare = !sh -c 'git symbolic-ref HEAD refs/heads/$1 && git rm --cached -r . && git clean -xfd' -
 	whois = !sh -c 'git log -i -1 --author=\"$1\" --pretty=\"format:%an <%ae>\"' -
 	serve = daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+	#############
+	behind = !git rev-list --left-only --count $(git bu)...HEAD
+	ahead = !git rev-list --right-only --count $(git bu)...HEAD
 	#############
 	ours = "!f() { git checkout --ours $@ && git add $@; }; f"
 	theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
