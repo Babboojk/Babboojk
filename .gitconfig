@@ -201,6 +201,7 @@
 	sl = stash list
 	sp = stash pop
 	ss = stash save
+	ssk = stash save -k
 	sw = stash show
 	st = !git stash list | wc -l 2>/dev/null | grep -oEi '[0-9][0-9]*'
 	#############
