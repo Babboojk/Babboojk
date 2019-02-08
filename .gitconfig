@@ -42,7 +42,7 @@
 [difftool]
 	prompt = false
 [github]
-	user = pkumar
+	user = pksunkara
 	token = token
 [gitflow "prefix"]
 	feature = feature-
@@ -118,6 +118,7 @@
 	ms = merge --skip
 	#############
 	o = checkout
+	om = checkout master
 	ob = checkout -b
 	#############
 	pr = prune -v
