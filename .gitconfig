@@ -71,6 +71,7 @@
 	br = branch -r
 	bc = rev-parse --abbrev-ref HEAD
 	bu = !git rev-parse --abbrev-ref --symbolic-full-name "@{u}"
+	bs = !git-branch-status
 	#############
 	c = commit
 	ca = commit -a
