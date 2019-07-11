@@ -85,7 +85,8 @@
 	cl = clone
 	cld = clone --depth 1
 	clg = !sh -c 'git clone git://github.com/$1 $(basename $1)' -
-	clgp = !sh -c 'git clone git@github.com:$(git config --get user.username)/$1 $1' -
+	clgp = !sh -c 'git clone git@github.com/$1 $(basename $1)' -
+	clgu = !sh -c 'git clone git@github.com:$(git config --get user.username)/$1 $1' -
 	#############
 	cp = cherry-pick
 	cpa = cherry-pick --abort
@@ -176,6 +177,7 @@
 	rehh = reset --hard HEAD
 	remh = reset --mixed HEAD
 	resh = reset --soft HEAD
+	rehom = reset --hard origin/master
 	#############
 	r = remote
 	ra = remote add
