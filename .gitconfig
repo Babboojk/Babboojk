@@ -124,6 +124,7 @@
 	o = checkout
 	om = checkout master
 	ob = checkout -b
+	opr = !sh -c 'git fo pull/$1/head:pr-$1 && git o pr-$1'
 	#############
 	pr = prune -v
 	#############
@@ -250,7 +251,7 @@
 	subrepo = !sh -c 'git filter-branch --prune-empty --subdirectory-filter $1 master' -
 	human = name-rev --name-only --refs=refs/heads/*
 [filter "lfs"]
-        clean = git-lfs clean -- %f
-        smudge = git-lfs smudge -- %f
-        process = git-lfs filter-process
-        required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
