@@ -35,4 +35,6 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
-*.lock
+# Editor files #
+################
+.vscode
